@@ -1,0 +1,14 @@
+.dashboard {
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .status {
+    font-size: 20px;
+    font-weight: 400;
+    font-family: Robot, sans-serif;
+    text-align: center;
+    margin: 10px 0;
+  }
+}

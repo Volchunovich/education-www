@@ -1,22 +1,21 @@
-import * as React from "react";
-import { observer } from "mobx-react";
-import { lazyInject } from "../../IoC";
-import { CounterStore } from "./CounterStore";
-
+import * as React from 'react';
+import { observer } from 'mobx-react';
+import { lazyInject } from '../../IoC';
+import { CounterStore } from './CounterStore';
 
 @observer
 class Counter extends React.Component {
-    @lazyInject(CounterStore)
-    public counterStore: CounterStore;
+  @lazyInject(CounterStore)
+  public counterStore: CounterStore;
 
-    public render() {
-        return (
-            <div>
-                <p>Counter: {this.counterStore.counter}</p>
-                <button onClick={this.counterStore.increment}>Increment</button>
-            </div>
-        );
-    }
+  public render() {
+    return (
+      <div>
+        <p>Counter: {this.counterStore.counter}</p>
+        <button onClick={this.counterStore.increment}>Increment</button>
+      </div>
+    );
+  }
 }
 
 export default Counter;

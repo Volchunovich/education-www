@@ -1,0 +1,74 @@
+.container {
+
+  @extend .center-position;
+
+  .login, .registration {
+    @extend .flex-center-column;
+    background: #f0f2f5;
+
+    padding: 20px;
+    border-radius: 20px;
+    width: 400px;
+
+    header {
+      height: 20px;
+      line-height: 20px;
+      background: transparent;
+      border-radius: 10px;
+      margin-bottom: 10px;
+      font-size: 20px;
+      font-weight: 400;
+      font-family: Robot, sans-serif;
+    }
+
+    main > form {
+      width: 350px;
+      @extend .flex-center-column;
+
+      > div {
+        margin: 5px;
+        width: 100%;
+      }
+
+      > button {
+        margin-top: 5px;
+        width: 100%;
+      }
+
+      > a {
+        text-align: right;
+        width: 100%;
+        margin-top: 10px;
+      }
+
+    }
+  }
+}
+
+.center-position {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+
+  @extend .flex-center-row;
+
+  background: #fff;
+}
+
+//region Flex helpers
+.flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.flex-center-row {
+  @extend .flex-center;
+  flex-direction: row;
+}
+
+.flex-center-column {
+  @extend .flex-center;
+  flex-direction: column;
+}
+//endregion

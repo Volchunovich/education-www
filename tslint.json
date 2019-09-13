@@ -1,32 +1,32 @@
 {
-    "extends": ["tslint:recommended", "tslint-react", "tslint-config-prettier"],
-    "linterOptions": {
-        "exclude": [
-            "node_modules/**/*.ts"
-        ]
-    },
-    "rules": {
-        "ordered-imports": false,
-        "object-literal-sort-keys": false,
-        "quotemark": [true, "double"],
-        "semicolon": [true, "always"],
-        "whitespace": [true,
-            "check-branch",
-            "check-decl",
-            "check-operator",
-            "check-module",
-            "check-separator",
-            "check-rest-spread",
-            "check-type",
-            "check-typecast",
-            "check-type-operator",
-            "check-preblock"
-        ],
-        "newline-before-return": true,
-        "no-consecutive-blank-lines": [true, 2],
-        "indent": [true, "spaces", 4],
-        "jsx-alignment": true,
-        "jsx-boolean-value": false,
-        "no-bitwise": false
-    }
+  "extends": ["tslint-react", "tslint-config-prettier"],
+  "linterOptions": {
+    "exclude": [
+      "node_modules/**/*.ts"
+    ]
+  },
+  "rules": {
+    "ordered-imports": false,
+    "object-literal-sort-keys": false,
+    "quotemark": [true, "single"],
+    "semicolon": [true, "always"],
+    "whitespace": [true,
+      "check-branch",
+      "check-decl",
+      "check-operator",
+      "check-module",
+      "check-separator",
+      "check-rest-spread",
+      "check-type",
+      "check-typecast",
+      "check-type-operator",
+      "check-preblock"
+    ],
+    "newline-before-return": true,
+    "no-consecutive-blank-lines": [true, 2],
+    "indent": [true, "spaces", 4],
+    "jsx-alignment": true,
+    "jsx-boolean-value": false,
+    "no-bitwise": false
+  }
 }
