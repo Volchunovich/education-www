@@ -14,7 +14,10 @@ export class SessionStore {
     isLoggedIn: false,
   };
 
-
+  @action
+  async session() {
+    const response = await this.api.get('mock');
+  }
 }
 
 interface ISessionState {

@@ -16,7 +16,7 @@ export class AxiosWrapper {
   }
 
   // noinspection JSMethodCanBeStatic
-  protected onSuccess(response: AxiosResponse) {
+  public onSuccess(response: AxiosResponse) {
     const { url, baseURL } = response.config;
     const path = `${this.BASE_PATH}${(url || '').slice((baseURL || '').length)}`;
 
@@ -26,7 +26,7 @@ export class AxiosWrapper {
   }
 
   // noinspection JSMethodCanBeStatic
-  protected onError(error: AxiosError): Promise<AxiosResponse | string>  {
+  public onError(error: AxiosError): Promise<AxiosResponse | string>  {
     const { url, baseURL } = error.config;
     const path = `${this.BASE_PATH}${(url || '').slice((baseURL || '').length)}`;
 
@@ -48,30 +48,30 @@ export class AxiosWrapper {
     return Promise.reject(error.response || error.message);
   }
 
-  protected async request(options: AxiosRequestConfig) {
+  public async request(options: AxiosRequestConfig) {
 
     return this.client(options)
       .then(this.onSuccess)
       .catch(this.onError);
   }
 
-  protected async get<ResponseType = any>(path: string, options?: AxiosRequestConfig): Promise<ResponseType> {
+  public async get<ResponseType = any>(path: string, options?: AxiosRequestConfig): Promise<ResponseType> {
     return this.request({ method: 'GET', url: path, ...options });
   }
 
-  protected async post<PayloadType = any, ResponseType = any>(path: string, payload?: PayloadType, options?: AxiosRequestConfig):
+  public async post<PayloadType = any, ResponseType = any>(path: string, payload?: PayloadType, options?: AxiosRequestConfig):
     Promise<ResponseType>
   {
     return this.request({ method: 'POST', url: path, data: payload, ...options });
   }
 
-  protected async put<PayloadType = any, ResponseType = any>(path: string, payload?: PayloadType, options?: AxiosRequestConfig):
+  public async put<PayloadType = any, ResponseType = any>(path: string, payload?: PayloadType, options?: AxiosRequestConfig):
     Promise<ResponseType>
   {
     return this.request({ method: 'PUT', url: path, data: payload, ...options });
   }
 
-  protected async delete<ResponseType = any, PayloadType = any>(path: string, payload?: PayloadType, options?: AxiosRequestConfig):
+  public async delete<ResponseType = any, PayloadType = any>(path: string, payload?: PayloadType, options?: AxiosRequestConfig):
     Promise<ResponseType>
   {
     return this.request({ method: 'DELETE', url: path, data: payload, ...options });
