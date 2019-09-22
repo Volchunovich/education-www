@@ -10,13 +10,14 @@ export class LoginStore {
   @inject(AxiosWrapper)
   private readonly api: AxiosWrapper;
 
-  // TODO: unmock request
   @action
-  async login(payload: IOutLoginPayloadDTO): Promise<void> {
+  async login(payload: IOutLoginPayloadDTO): Promise<Error> {
     try {
-      const response = await this.api.post('/auth/login', payload);
+      await this.api.post('https://auth-diplom.herokuapp.com/auth/login', payload);
     } catch (e) {
       console.error(e.message);
+
+      return new Error(e.data.message.toString());
     }
   }
 }

@@ -8,12 +8,16 @@ import { lazyInject } from '../../../../../IoC';
 import { SessionStore } from '../../../../Shared/stores/SessionStore';
 import { Link, RouteComponentProps, withRouter } from 'react-router-dom';
 import { FormProps } from 'antd/es/form';
+import { LoginStore } from '../LoginStore';
 
 @observer
 class LoginContainer extends React.Component<FormProps & RouteComponentProps> {
 
   @lazyInject(SessionStore)
   private readonly session: SessionStore;
+
+  @lazyInject(LoginStore)
+  private readonly loginStore: LoginStore;
 
   @observable
   private payload: IOutLoginPayloadDTO = {
@@ -30,10 +34,18 @@ class LoginContainer extends React.Component<FormProps & RouteComponentProps> {
 
     this.props.form.validateFieldsAndScroll((errors, values) => {
       if (!!errors) return;
-      console.log('is errors: ', !!errors);
+      try {
+        this.session.state.isLoggedIn = true;
+        this.props.history.push('/dashboard');
 
-      this.session.state.isLoggedIn = true;
-      this.props.history.push('/login');
+        // this.loginStore.login(this.payload)
+        //   .then(() => {
+        //     this.session.state.isLoggedIn = true;
+        //     this.props.history.push('/dashboard');
+        //   });
+      } catch (e) {
+        message.error(e);
+      }
     });
   }
 

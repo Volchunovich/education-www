@@ -16,10 +16,10 @@ class RegistrationContainer extends React.Component<FormProps & RouteComponentPr
   private readonly session: SessionStore;
 
   @lazyInject(RegistrationStore)
-  private readonly registration: RegistrationStore;
+  private readonly registrationStore: RegistrationStore;
 
   @observable
-  private payload: IOutRegistrationPayloadDTO = {
+  private payload = {
     username: '',
     password: '',
     confirmPassword: '',
@@ -35,11 +35,14 @@ class RegistrationContainer extends React.Component<FormProps & RouteComponentPr
     this.props.form.validateFieldsAndScroll((errors, values) => {
       if (!!errors) return;
 
-      if (this.registration.isPayloadValid(this.payload)) {
-        // this.session.state.isLoggedIn = true;
-        this.props.history.push('/login');
-      } else {
-        message.error('Do something wrong..');
+      try {
+        this.registrationStore.registration(this.payload)
+          .then(() => {
+            this.props.history.push('/login');
+            message.success('User successful registered!');
+          });
+      } catch (e) {
+        message.error(e);
       }
     });
   }

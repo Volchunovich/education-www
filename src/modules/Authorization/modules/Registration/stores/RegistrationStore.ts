@@ -11,17 +11,13 @@ export class RegistrationStore {
   private readonly api: AxiosWrapper;
 
   @action
-  isPayloadValid(payload: IOutRegistrationPayloadDTO): boolean {
-    return payload.password === payload.confirmPassword;
-  }
-
-  // TODO: unmock request
-  @action
-  async registration(payload: IOutRegistrationPayloadDTO): Promise<void> {
+  async registration(payload: IOutRegistrationPayloadDTO): Promise<Error> {
     try {
-      const response = await this.api.post('/auth/register', payload);
+      await this.api.post('https://auth-diplom.herokuapp.com/auth/register', payload);
     } catch (e) {
-      console.error(e.message);
+      // console.error(e.message);
+
+      return new Error(e.data.message.toString());
     }
   }
 }

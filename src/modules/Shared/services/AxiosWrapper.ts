@@ -1,8 +1,8 @@
 import { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios';
 import axios from 'axios';
-import { injectable } from 'inversify';
+import { provide } from '../../../IoC';
 
-@injectable()
+@provide.singleton()
 export class AxiosWrapper {
   private readonly BASE_PATH = '/api';
 
