@@ -11,13 +11,11 @@ export class RegistrationStore {
   private readonly api: AxiosWrapper;
 
   @action
-  async registration(payload: IOutRegistrationPayloadDTO): Promise<Error> {
+  async register(payload: IOutRegistrationPayloadDTO) {
     try {
-      await this.api.post('https://auth-diplom.herokuapp.com/auth/register', payload);
+      await this.api.post('/auth/register', payload);
     } catch (e) {
-      // console.error(e.message);
-
-      return new Error(e.data.message.toString());
+      throw new Error(e.data.message);
     }
   }
 }

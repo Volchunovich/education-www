@@ -4,10 +4,8 @@ import { provide } from '../../../IoC';
 
 @provide.singleton()
 export class AxiosWrapper {
-  private readonly BASE_PATH = '/api';
-
   private readonly client = axios.create({
-    baseURL: `${window.location.origin + this.BASE_PATH}`,
+    baseURL: `https://auth-diplom.herokuapp.com`,
   });
 
   constructor() {
@@ -17,20 +15,18 @@ export class AxiosWrapper {
 
   // noinspection JSMethodCanBeStatic
   public onSuccess(response: AxiosResponse) {
-    const { url, baseURL } = response.config;
-    const path = `${this.BASE_PATH}${(url || '').slice((baseURL || '').length)}`;
+    const { url } = response.config;
 
-    console.debug(`Request Successful! (${path})`, response); // tslint:disable-line
+    console.debug(`Request Successful! (${url})`, response); // tslint:disable-line
 
     return response.data;
   }
 
   // noinspection JSMethodCanBeStatic
   public onError(error: AxiosError): Promise<AxiosResponse | string>  {
-    const { url, baseURL } = error.config;
-    const path = `${this.BASE_PATH}${(url || '').slice((baseURL || '').length)}`;
+    const { url } = error.config;
 
-    console.error(`Request Failed (${path}):`, error.config); // tslint:disable-line
+    console.error(`Request Failed (${url}):`, error.config); // tslint:disable-line
 
     if (error.response) {
       // Request was made but server responded with something

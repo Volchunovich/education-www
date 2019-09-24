@@ -6,18 +6,15 @@ import { IOutLoginPayloadDTO } from './dto/output/IOutLoginPayloadDTO';
 
 @provide.singleton()
 export class LoginStore {
-
   @inject(AxiosWrapper)
   private readonly api: AxiosWrapper;
 
   @action
-  async login(payload: IOutLoginPayloadDTO): Promise<Error> {
+  async login(payload: IOutLoginPayloadDTO) {
     try {
-      await this.api.post('https://auth-diplom.herokuapp.com/auth/login', payload);
+      await this.api.post('/auth/login', payload);
     } catch (e) {
-      console.error(e.message);
-
-      return new Error(e.data.message.toString());
+      throw new Error(e.data.message);
     }
   }
 }

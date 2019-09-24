@@ -32,25 +32,21 @@ class LoginContainer extends React.Component<FormProps & RouteComponentProps> {
   private onSubmitHandler = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    this.props.form.validateFieldsAndScroll((errors, values) => {
+    this.props.form.validateFieldsAndScroll(async (errors, values) => {
       if (!!errors) return;
+
       try {
+        await this.loginStore.login(this.payload);
+
         this.session.state.isLoggedIn = true;
         this.props.history.push('/dashboard');
-
-        // this.loginStore.login(this.payload)
-        //   .then(() => {
-        //     this.session.state.isLoggedIn = true;
-        //     this.props.history.push('/dashboard');
-        //   });
       } catch (e) {
-        message.error(e);
+        message.error(e.message);
       }
     });
   }
 
   public render() {
-
     const usernamePrefix = <Icon type='user' style={{ color: 'rgba(0,0,0,.25)' }} />;
     const passwordPrefix = <Icon type='lock' style={{ color: 'rgba(0,0,0,.25)' }} />;
 

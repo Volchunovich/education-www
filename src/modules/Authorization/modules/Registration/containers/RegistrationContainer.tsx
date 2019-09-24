@@ -32,17 +32,15 @@ class RegistrationContainer extends React.Component<FormProps & RouteComponentPr
   private onSubmitHandler = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    this.props.form.validateFieldsAndScroll((errors, values) => {
+    this.props.form.validateFieldsAndScroll(async (errors, values) => {
       if (!!errors) return;
 
       try {
-        this.registrationStore.registration(this.payload)
-          .then(() => {
-            this.props.history.push('/login');
-            message.success('User successful registered!');
-          });
+        await this.registrationStore.register(this.payload);
+        this.props.history.push('/login');
+        message.success('User successfully registered!');
       } catch (e) {
-        message.error(e);
+        message.error(e.message);
       }
     });
   }
