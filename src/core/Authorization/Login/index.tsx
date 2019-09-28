@@ -1,14 +1,14 @@
 import * as React from 'react';
+import { Link, RouteComponentProps, withRouter } from 'react-router-dom';
 import { observable } from 'mobx';
 import { observer } from 'mobx-react';
-import { IOutLoginPayloadDTO } from '../dto/output/IOutLoginPayloadDTO';
 import { Button, Form, Icon, Input, Layout, message } from 'antd';
-import '../../../styles/auth-main.scss';
-import { lazyInject } from '../../../../../IoC';
-import { SessionStore } from '../../../../Shared/stores/SessionStore';
-import { Link, RouteComponentProps, withRouter } from 'react-router-dom';
 import { FormProps } from 'antd/es/form';
-import { LoginStore } from '../LoginStore';
+import { IOutLoginPayloadDTO } from './dto/output/IOutLoginPayloadDTO';
+import '../styles/auth-main.scss';
+import { lazyInject } from 'shared/utils/IoC';
+import { SessionStore } from 'shared/stores/SessionStore';
+import { LoginStore } from './store';
 
 @observer
 class LoginContainer extends React.Component<FormProps & RouteComponentProps> {
@@ -33,7 +33,9 @@ class LoginContainer extends React.Component<FormProps & RouteComponentProps> {
     e.preventDefault();
 
     this.props.form.validateFieldsAndScroll(async (errors, values) => {
-      if (!!errors) return;
+      if (!!errors) {
+        return;
+      }
 
       try {
         await this.loginStore.login(this.payload);

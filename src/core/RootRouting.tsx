@@ -1,16 +1,16 @@
 import * as React from 'react';
-import { Redirect, Route, Switch, withRouter, RouteComponentProps } from 'react-router-dom';
+import { Redirect, Route, Switch } from 'react-router-dom';
 import { StaticContext } from 'react-router';
-import DashboardContainer from './Dashboard/containers/DashboardContainer';
+import DashboardContainer from './Dashboard';
 import AuthRouting from './Authorization/AuthRouting';
-import { lazyInject } from '../IoC';
-import { SessionStore } from './Shared/stores/SessionStore';
+import { lazyInject } from 'shared/utils/IoC';
+import { SessionStore } from 'shared/stores/SessionStore';
 import { observer } from 'mobx-react';
 
 const { Suspense } = React;
 
 @observer
-class RootRouting extends React.Component<any, StaticContext> {
+class RootRouting extends React.Component<{}, StaticContext> {
 
   @lazyInject(SessionStore)
   private readonly session: SessionStore;
@@ -53,4 +53,4 @@ class RootRouting extends React.Component<any, StaticContext> {
   }
 }
 
-export default withRouter(RootRouting);
+export default RootRouting;

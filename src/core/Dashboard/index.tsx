@@ -1,11 +1,11 @@
 import * as React from 'react';
 import { Icon, Upload, Layout, message, Button } from 'antd';
-import '../styles/dashboard.scss';
+import './styles.scss';
 import { UploadChangeParam } from 'antd/es/upload';
 import { UploadFile } from 'antd/es/upload/interface';
-import { lazyInject } from '../../../IoC';
-import { DashboardStore } from '../stores/DashboardStore';
-import { AxiosWrapper } from '../../Shared/services/AxiosWrapper';
+import { lazyInject } from 'shared/utils/IoC';
+import { AxiosWrapper } from 'shared/utils/AxiosWrapper';
+import { DashboardStore } from './store';
 
 class DashboardContainer extends React.Component {
 

@@ -1,5 +1,6 @@
 {
     "compilerOptions": {
+        "baseUrl": "src",
         "outDir": "./dist/",
         "sourceMap": true,
         "lib": ["es6", "dom"],
@@ -8,7 +9,7 @@
         "jsx": "react",
         "noImplicitAny": true,
         "experimentalDecorators": true,
-        "emitDecoratorMetadata": true
+        "emitDecoratorMetadata": true,
     },
     "include": [
         "./src/**/*"

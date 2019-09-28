@@ -1,6 +1,5 @@
-import { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios';
-import axios from 'axios';
-import { provide } from '../../../IoC';
+import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios';
+import { provide } from './IoC';
 
 @provide.singleton()
 export class AxiosWrapper {

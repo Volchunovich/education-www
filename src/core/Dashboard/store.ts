@@ -1,6 +1,6 @@
-import { provide } from '../../../IoC';
+import { provide } from 'shared/utils/IoC';
 import { action, observable } from 'mobx';
-import { AxiosWrapper } from '../../Shared/services/AxiosWrapper';
+import { AxiosWrapper } from 'shared/utils/AxiosWrapper';
 import { inject } from 'inversify';
 
 @provide.singleton()

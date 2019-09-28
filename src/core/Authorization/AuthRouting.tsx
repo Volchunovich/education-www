@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { Redirect, Route, Switch, withRouter } from 'react-router-dom';
 import { StaticContext } from 'react-router';
-import LoginContainer from './modules/Login/containers/LoginContainer';
-import RegistrationContainer from './modules/Registration/containers/RegistrationContainer';
+import LoginContainer from './Login';
+import RegistrationContainer from './Registration';
 import { Form } from 'antd';
 
 const WrappedRegistrationContainer = Form.create({name: 'register'})(RegistrationContainer);

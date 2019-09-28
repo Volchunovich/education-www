@@ -1,12 +1,12 @@
 import * as React from 'react';
 import { Button, Form, Icon, Input, Layout, message } from 'antd';
 import { Link, RouteComponentProps, withRouter } from 'react-router-dom';
-import { lazyInject } from '../../../../../IoC';
-import { SessionStore } from '../../../../Shared/stores/SessionStore';
+import { lazyInject } from 'shared/utils/IoC';
+import { SessionStore } from 'shared/stores/SessionStore';
 import { observable } from 'mobx';
 import { observer } from 'mobx-react';
-import { IOutRegistrationPayloadDTO } from '../dto/output/IOutRegistrationPayloadDTO';
-import { RegistrationStore } from '../stores/RegistrationStore';
+import { IOutRegistrationPayloadDTO } from './dto/output/IOutRegistrationPayloadDTO';
+import { RegistrationStore } from './store';
 import { FormProps } from 'antd/es/form';
 
 @observer
@@ -33,7 +33,9 @@ class RegistrationContainer extends React.Component<FormProps & RouteComponentPr
     e.preventDefault();
 
     this.props.form.validateFieldsAndScroll(async (errors, values) => {
-      if (!!errors) return;
+      if (!!errors) {
+        return;
+      }
 
       try {
         await this.registrationStore.register(this.payload);

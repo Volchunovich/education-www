@@ -1,5 +1,5 @@
-import { provide } from '../../../../IoC';
-import { AxiosWrapper } from '../../../Shared/services/AxiosWrapper';
+import { provide } from 'shared/utils/IoC';
+import { AxiosWrapper } from 'shared/utils/AxiosWrapper';
 import { inject } from 'inversify';
 import { action } from 'mobx';
 import { IOutLoginPayloadDTO } from './dto/output/IOutLoginPayloadDTO';

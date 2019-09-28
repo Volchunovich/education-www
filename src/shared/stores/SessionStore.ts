@@ -1,7 +1,7 @@
-import { provide } from '../../../IoC';
+import { provide } from '../utils/IoC';
 import { action, observable } from 'mobx';
 import { inject } from 'inversify';
-import { AxiosWrapper } from '../services/AxiosWrapper';
+import { AxiosWrapper } from '../utils/AxiosWrapper';
 
 @provide.singleton()
 export class SessionStore {

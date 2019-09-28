@@ -7,9 +7,10 @@
   },
   "rules": {
     "ordered-imports": false,
+    "no-duplicate-imports": true,
     "object-literal-sort-keys": false,
     "quotemark": [true, "single"],
-    "semicolon": [true, "always"],
+    "semicolon": true,
     "whitespace": [true,
       "check-branch",
       "check-decl",
@@ -27,6 +28,8 @@
     "indent": [true, "spaces", 2],
     "jsx-alignment": true,
     "jsx-boolean-value": false,
-    "no-bitwise": false
+    "no-bitwise": false,
+    "await-promise": true,
+    "curly": true
   }
 }
