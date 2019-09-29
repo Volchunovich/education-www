@@ -12,6 +12,12 @@ export class AxiosWrapper {
     this.onError = this.onError.bind(this);
   }
 
+  public setAuthToken(jwtToken: string) {
+    this.client.defaults.headers = {
+      'Authorization': 'Bearer ' + jwtToken,
+    };
+  }
+
   // noinspection JSMethodCanBeStatic
   public onSuccess(response: AxiosResponse) {
     const { url } = response.config;

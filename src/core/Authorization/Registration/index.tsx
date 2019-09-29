@@ -2,21 +2,16 @@ import * as React from 'react';
 import { Button, Form, Icon, Input, Layout, message } from 'antd';
 import { Link, RouteComponentProps, withRouter } from 'react-router-dom';
 import { lazyInject } from 'shared/utils/IoC';
-import { SessionStore } from 'shared/stores/SessionStore';
 import { observable } from 'mobx';
 import { observer } from 'mobx-react';
-import { IOutRegistrationPayloadDTO } from './dto/output/IOutRegistrationPayloadDTO';
-import { RegistrationStore } from './store';
+import { AuthStore } from '../authStore';
 import { FormProps } from 'antd/es/form';
+import { InRegisterDto } from '../dto/in.register.dto';
 
 @observer
 class RegistrationContainer extends React.Component<FormProps & RouteComponentProps> {
-
-  @lazyInject(SessionStore)
-  private readonly session: SessionStore;
-
-  @lazyInject(RegistrationStore)
-  private readonly registrationStore: RegistrationStore;
+  @lazyInject(AuthStore)
+  private readonly registrationStore: AuthStore;
 
   @observable
   private payload = {
@@ -26,7 +21,7 @@ class RegistrationContainer extends React.Component<FormProps & RouteComponentPr
   };
 
   private onInputChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
-    this.payload[e.currentTarget.name as keyof IOutRegistrationPayloadDTO] = e.currentTarget.value;
+    this.payload[e.currentTarget.name as keyof InRegisterDto] = e.currentTarget.value;
   }
 
   private onSubmitHandler = (e: React.FormEvent<HTMLFormElement>) => {
@@ -150,4 +145,4 @@ class RegistrationContainer extends React.Component<FormProps & RouteComponentPr
   }
 }
 
-export default withRouter(RegistrationContainer);
+export default Form.create({name: 'register'})(withRouter(RegistrationContainer));

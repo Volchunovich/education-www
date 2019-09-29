@@ -1,55 +1,44 @@
 import * as React from 'react';
-import { Redirect, Route, Switch } from 'react-router-dom';
-import { StaticContext } from 'react-router';
-import DashboardContainer from './Dashboard';
-import AuthRouting from './Authorization/AuthRouting';
-import { lazyInject } from 'shared/utils/IoC';
-import { SessionStore } from 'shared/stores/SessionStore';
 import { observer } from 'mobx-react';
+import { Redirect, Route, Switch } from 'react-router-dom';
+import { Spin } from 'antd';
+
+import { lazyInject } from 'shared/utils/IoC';
+
+import DashboardContainer from './Dashboard';
+import { AuthStore } from './Authorization/authStore';
+import AuthRouting from './Authorization/AuthRouting';
 
 const { Suspense } = React;
 
 @observer
-class RootRouting extends React.Component<{}, StaticContext> {
-
-  @lazyInject(SessionStore)
-  private readonly session: SessionStore;
+class RootRouting extends React.Component {
+  @lazyInject(AuthStore)
+  authStore: AuthStore;
 
   public render() {
-    const canAccessDashboard = this.session.state.isLoggedIn;
-    const canAccessAuth = !this.session.state.isLoggedIn;
+    const { isLoggedIn, loading } = this.authStore;
 
-    const canAccessDashboardRender = () => {
-      return canAccessDashboard
-        ? <DashboardContainer/>
-        : <Redirect to='/login'/>;
-    };
+    if (loading) {
+      return <Spin />;
+    }
 
-    const canAccessAuthRender = () => {
-      return canAccessAuth
-        ? <AuthRouting/>
-        : <Redirect to='/dashboard'/>;
-    };
+    if (!isLoggedIn) {
+      return <AuthRouting />;
+    }
 
     return (
-      <>
-        <Suspense fallback='Loading ...'>
-          <Switch>
-            <Route
-              path='/dashboard'
-              render={canAccessDashboardRender}
-            />
+      <Suspense fallback='Loading ...'>
+        <Switch>
+          <Route
+            path='/dashboard'
+            component={DashboardContainer}
+          />
 
-            <Route
-              path='/'
-              render={canAccessAuthRender}
-            />
-          </Switch>
-        </Suspense>
-      </>
+          <Redirect to='/dashboard' />
+        </Switch>
+      </Suspense>
     );
-
-
   }
 }
 

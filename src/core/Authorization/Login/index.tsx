@@ -4,29 +4,24 @@ import { observable } from 'mobx';
 import { observer } from 'mobx-react';
 import { Button, Form, Icon, Input, Layout, message } from 'antd';
 import { FormProps } from 'antd/es/form';
-import { IOutLoginPayloadDTO } from './dto/output/IOutLoginPayloadDTO';
 import '../styles/auth-main.scss';
 import { lazyInject } from 'shared/utils/IoC';
-import { SessionStore } from 'shared/stores/SessionStore';
-import { LoginStore } from './store';
+import { AuthStore } from '../authStore';
+import { InLoginDto } from '../dto/in.login.dto';
 
 @observer
 class LoginContainer extends React.Component<FormProps & RouteComponentProps> {
-
-  @lazyInject(SessionStore)
-  private readonly session: SessionStore;
-
-  @lazyInject(LoginStore)
-  private readonly loginStore: LoginStore;
+  @lazyInject(AuthStore)
+  private readonly loginStore: AuthStore;
 
   @observable
-  private payload: IOutLoginPayloadDTO = {
+  private payload: InLoginDto = {
     username: '',
     password: '',
   };
 
   private onInputChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
-    this.payload[e.currentTarget.name as keyof IOutLoginPayloadDTO] = e.currentTarget.value;
+    this.payload[e.currentTarget.name as keyof InLoginDto] = e.currentTarget.value;
   }
 
   private onSubmitHandler = (e: React.FormEvent<HTMLFormElement>) => {
@@ -40,7 +35,6 @@ class LoginContainer extends React.Component<FormProps & RouteComponentProps> {
       try {
         await this.loginStore.login(this.payload);
 
-        this.session.state.isLoggedIn = true;
         this.props.history.push('/dashboard');
       } catch (e) {
         message.error(e.message);
@@ -111,4 +105,4 @@ class LoginContainer extends React.Component<FormProps & RouteComponentProps> {
   }
 }
 
-export default withRouter(LoginContainer);
+export default Form.create({name: 'login'})(withRouter(LoginContainer));
