@@ -1,7 +1,8 @@
 import 'reflect-metadata';
 import { Container, ContainerModule, interfaces } from 'inversify';
 import { fluentProvide } from 'inversify-binding-decorators';
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo } from 'react';
+import ServiceIdentifier = interfaces.ServiceIdentifier;
 
 const container = new Container({
   autoBindInjectable: true,
@@ -11,7 +12,7 @@ const container = new Container({
 // You can add here external services to container
 
 const provide = {
-  singleton: () => (target: any) =>
+  singleton: () => (target: ServiceIdentifier<any>) =>
     fluentProvide(target)
       .inSingletonScope()
       .done()(target),
@@ -29,67 +30,43 @@ interface IProvideSyntax {
 
 const PROVIDE_METADATA_KEY = 'inversify-binding-decorators:provide';
 
-const lazyInject = (identifier: any) => (target: any, key: string) => {
-  const isBound = container.isBound(identifier);
-  if (!isBound) {
-    const provideMetadata = (
-      Reflect.getMetadata(PROVIDE_METADATA_KEY, Reflect) || []
-    ).filter(
-      (metadata: IProvideSyntax) => metadata.implementationType === identifier
-    );
+function bindToContainer(identifier: ServiceIdentifier<any>) {
+  const provideMetadata = (Reflect.getMetadata(PROVIDE_METADATA_KEY, Reflect) || []).filter(
+    (metadata: IProvideSyntax) => metadata.implementationType === identifier,
+  );
 
-    if (provideMetadata.length === 0) {
-      throw new Error(`Provided identifier isn't registered: ${identifier}`);
-    }
-
-    container.load(
-      new ContainerModule((bind: any) => {
-        provideMetadata.forEach((metadata: IProvideSyntax) =>
-          metadata.constraint(bind, metadata.implementationType)
-        );
-      })
-    );
+  if (provideMetadata.length === 0) {
+    throw new Error(`Provided identifier isn't registered: ${identifier.toString()}`);
   }
 
-  Object.defineProperty(target, key, {
-    get: () => container.get(identifier),
-    enumerable: true,
-  });
-};
-
-// TODO: Refactor
-export function useLazyInject<T>(identifier: any): boolean {
-  useEffect(() => {
-    console.log('effect');
-  });
-
-  return true;
-  // return useMemo(() => {
-  //   debugger;
-  //   const isBound = container.isBound(identifier);
-  //
-  //   if (!isBound) {
-  //     const provideMetadata = (
-  //       Reflect.getMetadata(PROVIDE_METADATA_KEY, Reflect) || []
-  //     ).filter(
-  //       (metadata: IProvideSyntax) => metadata.implementationType === identifier
-  //     );
-  //
-  //     if (provideMetadata.length === 0) {
-  //       throw new Error(`Provided identifier isn't registered: ${identifier}`);
-  //     }
-  //
-  //     container.load(
-  //       new ContainerModule((bind: any) => {
-  //         provideMetadata.forEach((metadata: IProvideSyntax) =>
-  //           metadata.constraint(bind, metadata.implementationType)
-  //         );
-  //       })
-  //     );
-  //   }
-  //
-  //   return container.get(identifier);
-  // }, []);
+  container.load(
+    new ContainerModule(bind => {
+      provideMetadata.forEach((metadata: IProvideSyntax) => metadata.constraint(bind, metadata.implementationType));
+    }),
+  );
 }
 
-export { container, provide, lazyInject };
+function lazyInject(identifier: ServiceIdentifier<any>) {
+  return (target: any, key: string) => {
+    if (!container.isBound(identifier)) {
+      bindToContainer(identifier);
+    }
+
+    Object.defineProperty(target, key, {
+      get: () => container.get(identifier),
+      enumerable: true,
+    });
+  };
+}
+
+function useStore<T>(identifier: ServiceIdentifier<T>): T {
+  return useMemo(() => {
+    if (!container.isBound(identifier)) {
+      bindToContainer(identifier);
+    }
+
+    return container.get(identifier);
+  }, []);
+}
+
+export { container, provide, lazyInject, useStore };
