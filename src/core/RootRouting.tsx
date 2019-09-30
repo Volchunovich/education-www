@@ -9,8 +9,6 @@ import DashboardContainer from './Dashboard';
 import { AuthStore } from './Authorization/authStore';
 import AuthRouting from './Authorization/AuthRouting';
 
-const { Suspense } = React;
-
 @observer
 class RootRouting extends React.Component {
   @lazyInject(AuthStore)
@@ -28,16 +26,14 @@ class RootRouting extends React.Component {
     }
 
     return (
-      <Suspense fallback='Loading ...'>
-        <Switch>
-          <Route
-            path='/dashboard'
-            component={DashboardContainer}
-          />
+      <Switch>
+        <Route
+          path='/dashboard'
+          component={DashboardContainer}
+        />
 
-          <Redirect to='/dashboard' />
-        </Switch>
-      </Suspense>
+        <Redirect to='/dashboard' />
+      </Switch>
     );
   }
 }
